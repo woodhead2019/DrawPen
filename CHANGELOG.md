@@ -1,5 +1,12 @@
 # Change Log
 
+## [0.0.53] - 2026-06-28
+### Features:
+- Add clear drawings on hide setting
+
+### Improvements:
+- Fix auto-update restart flow
+
 ## [0.0.52] - 2026-06-07
 ### Features:
 - Add configurable pen stroke smoothing
