@@ -1,4 +1,4 @@
-import { app, Tray, Menu, BrowserWindow, screen, globalShortcut, shell, ipcMain, nativeTheme, systemPreferences, desktopCapturer } from 'electron';
+import { app, Tray, Menu, BrowserWindow, screen, globalShortcut, shell, ipcMain, nativeTheme, systemPreferences, desktopCapturer, autoUpdater } from 'electron';
 import { updateElectronApp } from 'update-electron-app';
 import Store from 'electron-store';
 import { randomUUID } from 'crypto';
@@ -644,6 +644,10 @@ app.whenReady().then(() => {
 })
 
 app.on('before-quit', () => {
+  isQuitting = true;
+});
+
+autoUpdater.on('before-quit-for-update', () => {
   isQuitting = true;
 });
 
