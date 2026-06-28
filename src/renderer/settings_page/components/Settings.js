@@ -61,6 +61,7 @@ const Settings = (config) => {
   const [laserTimeMs, setLaserTimeMs] = useState(config.laser_time);
   const [launchOnLogin, setLaunchOnLogin] = useState(config.launch_on_login);
   const [startsHidden, setStartsHidden] = useState(config.starts_hidden);
+  const [clearDrawingsOnHide, setClearDrawingsOnHide] = useState(config.clear_drawings_on_hide);
   const [disableToolbarInPointerMode, setDisableToolbarInPointerMode] = useState(config.disable_toolbar_in_pointer_mode);
 
   const [showHideApp, setShowHideApp]               = useState({ accelerator: config.key_binding_show_hide_app,        init: config.key_binding_show_hide_app_default });
@@ -175,6 +176,13 @@ const Settings = (config) => {
     setStartsHidden(nextState);
 
     window.electronAPI.setStartsHidden(nextState);
+  };
+
+  const toggleClearDrawingsOnHide = () => {
+    const nextState = !clearDrawingsOnHide;
+    setClearDrawingsOnHide(nextState);
+
+    window.electronAPI.setClearDrawingsOnHide(nextState);
   };
 
   const toggleDisableToolbarInPointerMode = () => {
@@ -423,6 +431,19 @@ const Settings = (config) => {
                     <div
                       className={`toggle ${penSmoothing ? 'active' : ''}`}
                       onClick={togglePenSmoothing}
+                    ></div>
+                  </div>
+                </div>
+
+                <div className="settings-item">
+                  <div className="settings-item-info">
+                    <div className="settings-item-title">Clear drawings on hide</div>
+                  </div>
+
+                  <div className="settings-item-control">
+                    <div
+                      className={`toggle ${clearDrawingsOnHide ? 'active' : ''}`}
+                      onClick={toggleClearDrawingsOnHide}
                     ></div>
                   </div>
                 </div>

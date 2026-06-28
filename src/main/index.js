@@ -168,6 +168,10 @@ const schema = {
     type: 'boolean',
     default: false
   },
+  clear_drawings_on_hide: {
+    type: 'boolean',
+    default: false
+  },
   drawing_monitor: {
     type: 'object',
     default: {
@@ -707,6 +711,7 @@ ipcMain.handle('get_settings', () => {
     fade_disappear_after_ms: store.get('fade_disappear_after_ms'),
     fade_out_duration_time_ms: store.get('fade_out_duration_time_ms'),
     laser_time: store.get('laser_time'),
+    clear_drawings_on_hide: store.get('clear_drawings_on_hide'),
 
     key_binding_show_hide_toolbar:    normalizeAcceleratorForUI(store.get('key_binding_show_hide_toolbar')),
     key_binding_show_hide_whiteboard: normalizeAcceleratorForUI(store.get('key_binding_show_hide_whiteboard')),
@@ -800,6 +805,7 @@ ipcMain.handle('get_configuration', () => {
     app_icon_color:                           store.get('app_icon_color'),
     launch_on_login:                          store.get('launch_on_login'),
     starts_hidden:                            store.get('starts_hidden'),
+    clear_drawings_on_hide:                   store.get('clear_drawings_on_hide'),
     disable_toolbar_in_pointer_mode:          store.get('disable_toolbar_in_pointer_mode'),
 
     key_binding_show_hide_app:                normalizeAcceleratorForUI(store.get('key_binding_show_hide_app')),
@@ -882,6 +888,16 @@ ipcMain.handle('set_starts_hidden', (_event, value) => {
   rawLog('Setting starts hidden:', value)
 
   store.set('starts_hidden', value)
+
+  return null;
+});
+
+ipcMain.handle('set_clear_drawings_on_hide', (_event, value) => {
+  rawLog('Setting clear drawings on hide:', value)
+
+  store.set('clear_drawings_on_hide', value)
+
+  refreshSettingsInRenderer();
 
   return null;
 });
@@ -994,6 +1010,7 @@ function refreshSettingsInRenderer() {
     show_cute_cursor:        store.get('show_cute_cursor'),
     pen_smoothing:           store.get('pen_smoothing'),
     swap_colors_indexes:     store.get('swap_colors_indexes'),
+    clear_drawings_on_hide:  store.get('clear_drawings_on_hide'),
   })
 }
 
@@ -1052,6 +1069,8 @@ function enableDrawMode() {
 function enablePointerMode() {
   rawLog('Enable pointer mode...')
 
+  resetScreenOnHide()
+
   showExtendedToolbarWindow()
   hideWindow(mainWindow)
 
@@ -1064,6 +1083,8 @@ function enablePointerMode() {
 function hideApp() {
   rawLog('Hiding app...')
 
+  resetScreenOnHide()
+
   hideWindow(mainWindow)
   hideWindow(extendedToolbarWindow)
 
@@ -1071,6 +1092,12 @@ function hideApp() {
   updateContextMenu()
 
   releaseFocusBack()
+}
+
+function resetScreenOnHide() {
+  if (store.get('clear_drawings_on_hide')) {
+    sendResetScreen();
+  }
 }
 
 function handleDisplayChange() {
@@ -1142,11 +1169,13 @@ function resetApp() {
 }
 
 function resetScreen() {
-  withThrottle(() => {
-    rawLog('Resetting screen...')
+  withThrottle(sendResetScreen);
+}
 
-    mainWindow.webContents.send('reset_screen');
-  });
+function sendResetScreen() {
+  rawLog('Resetting screen...')
+
+  mainWindow.webContents.send('reset_screen');
 }
 
 function quitApp() {

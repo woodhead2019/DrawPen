@@ -86,6 +86,7 @@ const Application = (settings) => {
   const initialShowDrawingBorder = settings.show_drawing_border
   const initialShowCuteCursor = settings.show_cute_cursor
   const initialPenSmoothing = settings.pen_smoothing
+  const initialClearDrawingsOnHide = settings.clear_drawings_on_hide
   const initialToolbarDefaultBrush = settings.tool_bar_default_brush
   const initialToolbarDefaultFigure = settings.tool_bar_default_figure
   const initialToolbarCollapsed = settings.tool_bar_collapsed
@@ -152,6 +153,7 @@ const Application = (settings) => {
   const [showDrawingBorder, setShowDrawingBorder] = useState(initialShowDrawingBorder);
   const [showCuteCursor, setShowCuteCursor] = useState(initialShowCuteCursor);
   const [penSmoothing, setPenSmoothing] = useState(initialPenSmoothing);
+  const [clearDrawingsOnHide, setClearDrawingsOnHide] = useState(initialClearDrawingsOnHide);
   const [mainColorIndex, setMainColorIndex] = useState(initialMainColorIndex);
   const [secondaryColorIndex, setSecondaryColorIndex] = useState(initialSecondaryColorIndex);
   const [toastInfo, setToastInfo] = useState(null);
@@ -1315,11 +1317,21 @@ const Application = (settings) => {
     setMouseCoordinates(getMouseCoordinates(event));
   }
 
-  const handleContextMenu = (_event) => {
+  const handleContextMenu = (event) => {
+    event.preventDefault();
+
+    if (clearDrawingsOnHide) {
+      handleReset();
+    }
+
     invokePointerMode();
   }
 
   const handleEnablePointerMode = () => {
+    if (clearDrawingsOnHide) {
+      handleReset();
+    }
+
     invokePointerMode();
   };
 
@@ -1397,6 +1409,7 @@ const Application = (settings) => {
     setShowDrawingBorder(newSettings.show_drawing_border);
     setShowCuteCursor(newSettings.show_cute_cursor);
     setPenSmoothing(newSettings.pen_smoothing);
+    setClearDrawingsOnHide(newSettings.clear_drawings_on_hide);
     setMainColorIndex(newSettings.swap_colors_indexes[0]);
     setSecondaryColorIndex(newSettings.swap_colors_indexes[1]);
   };
