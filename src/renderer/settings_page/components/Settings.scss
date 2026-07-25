@@ -425,7 +425,7 @@ html, body {
                     }
 
                     &.color-light {
-                      &::before { border-color: #D9D9D9; }
+                      &::before { border-color: var(--gray-300); }
                     }
 
                     &.color-rainbow { background-image: conic-gradient(red, yellow, lime, aqua, blue, magenta, red); }

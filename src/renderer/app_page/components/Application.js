@@ -233,6 +233,10 @@ const Application = (settings) => {
       return
     }
 
+    if (ctrlOrMeta && !['v', 'c', 'z'].includes(eventKey)) {
+      return
+    }
+
     if (eventCode === 'keyx') {
       if (['eraser', 'laser'].includes(activeTool)) {
         return;
