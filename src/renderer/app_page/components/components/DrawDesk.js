@@ -85,7 +85,7 @@ const DrawDesk = ({
 
     allFigures.forEach((figure) => {
       if (figure.type === 'pen') {
-        if (colorList[figure.colorIndex].name === 'color_rainbow') {
+        if (colorList[figure.colorIndex].isRainbow) {
           drawRainbowPen(ctx, offscreenCanvas, figure, updateRainbowColorDeg)
         } else {
           drawPen(ctx, figure)
@@ -93,7 +93,7 @@ const DrawDesk = ({
       }
 
       if (figure.type === 'highlighter') {
-        if (colorList[figure.colorIndex].name === 'color_rainbow') {
+        if (colorList[figure.colorIndex].isRainbow) {
           drawRainbowHighlighter(ctx, offscreenCanvas, figure, updateRainbowColorDeg)
         } else {
           drawHighlighter(ctx, figure)
@@ -155,7 +155,7 @@ const DrawDesk = ({
 
     allFadeFigures.forEach((figure) => {
       if (figure.type === 'fadepen') {
-        if (colorList[figure.colorIndex].name === 'color_rainbow') {
+        if (colorList[figure.colorIndex].isRainbow) {
           drawRainbowPen(ctx, offscreenCanvas, figure, updateRainbowColorDeg, fadeOpacity)
         } else {
           drawPen(ctx, figure, fadeOpacity)

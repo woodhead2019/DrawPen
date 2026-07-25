@@ -19,13 +19,6 @@
   --space-lg: 10px;
 
   --font-primary: 'Inter', Arial, Helvetica, sans-serif;
-
-  --color-picker-blue:   #529BE0; // ~ equals to colorList
-  --color-picker-red:    #E05252;
-  --color-picker-green:  #52E06C;
-  --color-picker-orange: #E0A552;
-  --color-picker-white:  #FFFFFF;
-  --color-picker-black:  #1E1E1E;
 }
 
 html, body {
@@ -431,17 +424,11 @@ html, body {
                       transform: translate(-50%, -50%);
                     }
 
-                    &.color_white {
+                    &.color-light {
                       &::before { border-color: #D9D9D9; }
                     }
 
-                    &.color_rainbow { background: conic-gradient(red, yellow, lime, aqua, blue, magenta, red); }
-                    &.color_blue { background-color: var(--color-picker-blue); }
-                    &.color_red { background-color: var(--color-picker-red); }
-                    &.color_green { background-color: var(--color-picker-green); }
-                    &.color_orange { background-color: var(--color-picker-orange); }
-                    &.color_black { background-color: var(--color-picker-black); }
-                    &.color_white { background-color: var(--color-picker-white); }
+                    &.color-rainbow { background-image: conic-gradient(red, yellow, lime, aqua, blue, magenta, red); }
                   }
                 }
               }

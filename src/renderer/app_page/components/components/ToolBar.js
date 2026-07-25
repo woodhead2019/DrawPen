@@ -39,6 +39,8 @@ const ToolBar = ({
     eraser: <Icons.Eraser />,
   };
 
+  const activeColor = colorList[activeColorIndex];
+
   const [dragging, setDragging] = useState(false);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const toolbarRef = useRef();
@@ -328,7 +330,7 @@ const ToolBar = ({
                 </li>
                 <li className="cross-line"></li>
                 <li onClick={() => !isColorControlDisabled && setToolbarSlide("color-slide")}>
-                  <button tabIndex={-1} className={`toolbar__color-picker ${colorList[activeColorIndex].name} color_tool_${activeTool}`} title={isColorControlDisabled ? "Color" : renderShortcutTitle("Color", "7")} />
+                  <button tabIndex={-1} className={`toolbar__color-picker ${activeColor.isRainbow ? 'color-rainbow' : ''} color_tool_${activeTool}`} style={{ backgroundColor: activeColor.color }} title={isColorControlDisabled ? "Color" : renderShortcutTitle("Color", "7")} />
                 </li>
                 <li onClick={() => setToolbarSlide("width-slide")}>
                   <button tabIndex={-1} className={`toolbar__width-picker ${widthList[activeWidthIndex].name}`} title={renderShortcutTitle("Brush Size", "8")}>
@@ -397,7 +399,7 @@ const ToolBar = ({
                   className={activeColorIndex === index ? "active" : undefined}
                   onClick={() => onChangeColor(index)}
                 >
-                  <button tabIndex={-1} className={`toolbar__color-picker ${color.name}`} title={renderColorTitle(color, index)} />
+                  <button tabIndex={-1} className={`toolbar__color-picker ${color.isRainbow ? 'color-rainbow' : ''}`} style={{ backgroundColor: color.color }} title={renderColorTitle(color, index)} />
                 </li>
               ))}
             </ul>
@@ -430,7 +432,7 @@ const ToolBar = ({
                 </li>
 
                 <div className="toolbar__color-hint-wrapper" onClick={handleToggleCollapsed}>
-                  <div className={`toolbar__color-hint color_tool_${activeTool} ${colorList[activeColorIndex].name} ${widthList[activeWidthIndex].name}`}></div>
+                  <div className={`toolbar__color-hint color_tool_${activeTool} ${activeColor.isRainbow ? 'color-rainbow' : ''} ${widthList[activeWidthIndex].name}`} style={{ backgroundColor: activeColor.color }}></div>
                 </div>
               </ul>
             </div>

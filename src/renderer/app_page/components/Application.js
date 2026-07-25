@@ -1247,7 +1247,7 @@ const Application = (settings) => {
       if (activeTool === 'fadepen') {
         const currentFigure = allFadeFigures.at(-1);
 
-        if (penSmoothing && colorList[currentFigure.colorIndex].name !== 'color_rainbow') {
+        if (penSmoothing && !colorList[currentFigure.colorIndex].isRainbow) {
           currentFigure.points = [...filterClosePoints(currentFigure.points, currentFigure.widthIndex)];
         }
 
@@ -1258,7 +1258,7 @@ const Application = (settings) => {
       if (activeTool === 'pen') {
         const currentFigure = allFigures.at(-1);
 
-        if (penSmoothing && colorList[currentFigure.colorIndex].name !== 'color_rainbow') {
+        if (penSmoothing && !colorList[currentFigure.colorIndex].isRainbow) {
           currentFigure.points = [...filterClosePoints(currentFigure.points, currentFigure.widthIndex)];
         }
 

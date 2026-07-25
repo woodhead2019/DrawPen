@@ -1,3 +1,5 @@
+import ntc from "ntcjs";
+
 export const timeStep = 100;
 // export const laserTime = 2000; // schema.laser_time.default
 export const laserTimeMin = 300;
@@ -38,14 +40,30 @@ export const dotHoverColor = dotBorderColor + '99';
 export const dotTextMargin = 5;
 
 export const colorList = [
-  { color: '#000000', name: 'color_rainbow', title: 'Rainbow' },
-  { color: '#529BE0', name: 'color_blue',    title: 'Blue' },
-  { color: '#E05252', name: 'color_red',     title: 'Red' },
-  { color: '#52E06C', name: 'color_green',   title: 'Green' },
-  { color: '#E0A552', name: 'color_orange',  title: 'Orange' },
-  { color: '#FFFFFF', name: 'color_white',   title: 'White' },
-  { color: '#1E1E1E', name: 'color_black',   title: 'Black' },
+  { id: 'color_0', color: '#000000', title: 'Rainbow', isLightColor: false, isRainbow: true }, // NOTE: "Reserved" Rainbow color!
+  { id: 'color_1', color: '#000000', title: 'Color 1', isLightColor: false, isRainbow: false },
+  { id: 'color_2', color: '#000000', title: 'Color 2', isLightColor: false, isRainbow: false },
+  { id: 'color_3', color: '#000000', title: 'Color 3', isLightColor: false, isRainbow: false },
+  { id: 'color_4', color: '#000000', title: 'Color 4', isLightColor: false, isRainbow: false },
+  { id: 'color_5', color: '#000000', title: 'Color 5', isLightColor: false, isRainbow: false },
+  { id: 'color_6', color: '#000000', title: 'Color 6', isLightColor: false, isRainbow: false },
 ];
+
+export const applyToolbarColorPalette = (palette) => {
+  colorList.slice(1).forEach((colorInfo) => {
+    colorInfo.color = palette[colorInfo.id];
+    colorInfo.title = ntc.name(colorInfo.color)[1];
+    colorInfo.isLightColor = isLightColor(colorInfo.color);
+  });
+};
+
+export const isLightColor = (color) => {
+  const red = parseInt(color.slice(1, 3), 16);
+  const green = parseInt(color.slice(3, 5), 16);
+  const blue = parseInt(color.slice(5, 7), 16);
+
+  return ((red * 299) + (green * 587) + (blue * 114)) / 1000 > 200;
+};
 
 // - font_y_offset_compensation: Hack to make HTML similar to Canvas
 //   Data taken from Retina display

@@ -93,6 +93,17 @@ const schema = {
     type: 'number',
     default: 1
   },
+  toolbar_color_palette: {
+    type: 'object',
+    default: {
+      color_1: '#529BE0',
+      color_2: '#E05252',
+      color_3: '#52E06C',
+      color_4: '#E0A552',
+      color_5: '#FFFFFF',
+      color_6: '#1E1E1E',
+    }
+  },
   tool_bar_active_weight_index: {
     type: 'number',
     default: 1
@@ -707,6 +718,7 @@ ipcMain.handle('get_settings', () => {
     tool_bar_y: store.get('tool_bar_y'),
     tool_bar_active_tool: store.get('tool_bar_active_tool'),
     tool_bar_active_color_index: store.get('tool_bar_active_color_index'),
+    toolbar_color_palette: store.get('toolbar_color_palette'),
     tool_bar_active_weight_index: store.get('tool_bar_active_weight_index'),
     tool_bar_default_brush: store.get('tool_bar_default_brush'),
     tool_bar_default_figure: store.get('tool_bar_default_figure'),
@@ -799,6 +811,7 @@ ipcMain.handle('get_configuration', () => {
     show_drawing_border:                      store.get('show_drawing_border'),
     show_cute_cursor:                         store.get('show_cute_cursor'),
     pen_smoothing:                            store.get('pen_smoothing'),
+    toolbar_color_palette:                    store.get('toolbar_color_palette'),
     swap_colors_indexes:                      store.get('swap_colors_indexes'),
     fade_disappear_after_ms:                  store.get('fade_disappear_after_ms'),
     fade_out_duration_time_ms:                store.get('fade_out_duration_time_ms'),
@@ -1165,6 +1178,8 @@ function resetApp() {
     tray.setImage(getTrayIconPath())
 
     enablePointerMode()
+    
+    mainWindow.reload()
 
     if (settingsWindow) {
       settingsWindow.reload()

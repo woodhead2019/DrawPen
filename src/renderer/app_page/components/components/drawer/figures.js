@@ -90,7 +90,7 @@ const activeColorAndWidth = (figure) => {
   const { colorIndex } = figure;
   const width = 2;
 
-  if (colorList[colorIndex].name === 'color_white') {
+  if (colorList[colorIndex].isLightColor) {
     return ['#6CC3E2', width]
   }
 
@@ -103,7 +103,7 @@ const detectColorAndWidth = (ctx, figure, updateRainbowColorDeg) => {
   let color = colorList[colorIndex].color
   const width = widthList[widthIndex].figure_size
 
-  if (colorList[colorIndex].name === 'color_rainbow') {
+  if (colorList[colorIndex].isRainbow) {
     color = createGradient(ctx, pointA, pointB, rainbowColorDeg, updateRainbowColorDeg)
   }
 
@@ -126,7 +126,7 @@ const detectColorAndFontSize = (ctx, figure, updateRainbowColorDeg) => {
     font_y_offset_compensation = widthList[widthIndex].font_y_offset_compensation_retina
   }
 
-  if (colorList[colorIndex].name === 'color_rainbow') {
+  if (colorList[colorIndex].isRainbow) {
     const pointB = [pointA[0], pointA[1] + height] // Vertical Gradient
 
     color = createGradient(ctx, pointA, pointB, rainbowColorDeg, updateRainbowColorDeg)
@@ -142,7 +142,7 @@ const detectColorAndFontSize = (ctx, figure, updateRainbowColorDeg) => {
 export const getCursorColor = (colorIndex, rainbowColorDeg) => {
   const colorInfo = colorList[colorIndex]
 
-  if (colorInfo.name === 'color_rainbow') {
+  if (colorInfo.isRainbow) {
     return hslColor(rainbowColorDeg)
   }
 

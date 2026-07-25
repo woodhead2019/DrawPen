@@ -59,7 +59,7 @@ const TextEditor = ({
     const textArea = textAreaRef.current;
     if (!textArea) { return }
 
-    if (colorList[textEditorContainer.colorIndex].name !== 'color_rainbow') {
+    if (!colorList[textEditorContainer.colorIndex].isRainbow) {
       return;
     }
 

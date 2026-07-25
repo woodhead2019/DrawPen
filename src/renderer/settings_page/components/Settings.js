@@ -73,6 +73,9 @@ const Settings = (config) => {
   const [secondaryColor, setSecondaryColor] = useState(config.swap_colors_indexes[1]);
   const [drawingMonitor, setDrawingMonitor] = useState(config.drawing_monitor);
 
+  const mainColorInfo = colorList[mainColor];
+  const secondaryColorInfo = colorList[secondaryColor];
+
   const [activeTab, setActiveTab] = useState('shortcuts');
 
   const displays = config.displays || [];
@@ -356,14 +359,16 @@ const Settings = (config) => {
                     <div className="color-swatches">
                       <div
                         onClick={nextMainColor}
-                        className={`color-plate ${colorList[mainColor].name}`}
+                        className={`color-plate ${mainColorInfo.isRainbow ? 'color-rainbow' : ''} ${mainColorInfo.isLightColor ? 'color-light' : ''}`}
+                        style={{ backgroundColor: mainColorInfo.color }}
                       ></div>
 
                       <HiSwitchHorizontal className="icon icon--disabled" title="Press X to switch colors" />
 
                       <div
                         onClick={nextSecondaryColor}
-                        className={`color-plate ${colorList[secondaryColor].name}`}
+                        className={`color-plate ${secondaryColorInfo.isRainbow ? 'color-rainbow' : ''} ${secondaryColorInfo.isLightColor ? 'color-light' : ''}`}
+                        style={{ backgroundColor: secondaryColorInfo.color }}
                       ></div>
                     </div>
                   </div>

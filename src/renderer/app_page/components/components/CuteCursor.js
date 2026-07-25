@@ -20,11 +20,11 @@ const CuteCursor = ({
       strokeWidth: "20"
     };
 
-    if (colorList[activeColorIndex].name === "color_white") {
+    if (colorList[activeColorIndex].isLightColor) {
       iconProps.stroke = '#777';
     }
 
-    if (colorList[activeColorIndex].name === "color_rainbow") {
+    if (colorList[activeColorIndex].isRainbow) {
       iconProps = {
         size: iconSize,
         fill: "url(#svg-gradient)",
