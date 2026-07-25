@@ -9,6 +9,10 @@ const CuteCursor = ({
   activeTool,
   Icons
 }) => {
+  if (mouseCoordinates.x === 0 && mouseCoordinates.y === 0) {
+    return null;
+  }
+
   const renderIconByToolName = (toolName) => {
     const iconColor = colorList[activeColorIndex].color;
     const iconSize = widthList[activeWidthIndex].icon_size;
