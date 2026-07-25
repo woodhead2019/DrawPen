@@ -43,7 +43,7 @@ import {
   shapeList,
   penVariantList,
   arrowVariantList,
-  colorList,
+  createApplicationColorList,
   widthList,
   minObjectDistance,
   pastCooldownMs,
@@ -116,6 +116,7 @@ const Application = (settings) => {
     ]
   }
 
+  const [colorList, setColorList] = useState(() => createApplicationColorList(settings.tool_bar_color_palette));
   const [rainbowColorDeg, updateRainbowColorDeg] = useState(initialColorDeg);
   const [mouseCoordinates, setMouseCoordinates] = useState({ x: 0, y: 0 });
   const [allFigures, setAllFigures] = useState(initialFigures);
@@ -564,7 +565,7 @@ const Application = (settings) => {
         }
         break;
     }
-  }, [allFigures, undoStackFigures, redoStackFigures, clipboardFigure, isDrawing, activeFigureInfo, activeTool, activeColorIndex, activeWidthIndex, toolbarLastActiveBrush, toolbarLastActiveFigure, lastActivePen, lastActiveArrow, toolbarSlide, textEditorContainer, mouseCoordinates, mainColorIndex, secondaryColorIndex]);
+  }, [allFigures, undoStackFigures, redoStackFigures, clipboardFigure, isDrawing, activeFigureInfo, activeTool, activeColorIndex, activeWidthIndex, toolbarLastActiveBrush, toolbarLastActiveFigure, lastActivePen, lastActiveArrow, toolbarSlide, textEditorContainer, mouseCoordinates, mainColorIndex, secondaryColorIndex, colorList]);
 
   const handleKeyUp = useCallback((event) => {
     const eventKey = (event.key || '').toLowerCase();
@@ -1405,6 +1406,7 @@ const Application = (settings) => {
   const handleRefreshSettings = (_, newSettings) => {
     console.log('Main -> Renderer: Refresh Settings');
 
+    setColorList(createApplicationColorList(newSettings.tool_bar_color_palette));
     setWhiteboardTheme(newSettings.whiteboard_color);
     setWhiteboardLayout(newSettings.whiteboard_layout);
     setWhiteboardOpacity(newSettings.whiteboard_opacity);
@@ -1577,6 +1579,7 @@ const Application = (settings) => {
           <TextEditor
             textEditorContainer={textEditorContainer}
             handleTextEditorBlur={handleTextEditorBlur}
+            colorList={colorList}
           />
       }
 
@@ -1588,6 +1591,7 @@ const Application = (settings) => {
             activeWidthIndex={activeWidthIndex}
             activeTool={activeTool}
             Icons={Icons}
+            colorList={colorList}
           />
       }
 
@@ -1606,6 +1610,7 @@ const Application = (settings) => {
         updateRainbowColorDeg={updateRainbowColorDeg}
         activeTool={activeTool}
         handleChangeTool={handleChangeTool}
+        colorList={colorList}
       />
 
       {
@@ -1629,6 +1634,7 @@ const Application = (settings) => {
             handleClearDesk={handleReset}
             handleEnablePointerMode={handleEnablePointerMode}
             Icons={Icons}
+            colorList={colorList}
           />
       }
     </div>

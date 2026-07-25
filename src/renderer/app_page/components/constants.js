@@ -39,30 +39,46 @@ export const dotBorderColor = '#6CC3E2';
 export const dotHoverColor = dotBorderColor + '99';
 export const dotTextMargin = 5;
 
-export const colorList = [
-  { id: 'color_0', color: '#000000', title: 'Rainbow', isLightColor: false, isRainbow: true }, // NOTE: "Reserved" Rainbow color!
-  { id: 'color_1', color: '#000000', title: 'Color 1', isLightColor: false, isRainbow: false },
-  { id: 'color_2', color: '#000000', title: 'Color 2', isLightColor: false, isRainbow: false },
-  { id: 'color_3', color: '#000000', title: 'Color 3', isLightColor: false, isRainbow: false },
-  { id: 'color_4', color: '#000000', title: 'Color 4', isLightColor: false, isRainbow: false },
-  { id: 'color_5', color: '#000000', title: 'Color 5', isLightColor: false, isRainbow: false },
-  { id: 'color_6', color: '#000000', title: 'Color 6', isLightColor: false, isRainbow: false },
-];
-
-export const applyToolbarColorPalette = (palette) => {
-  colorList.slice(1).forEach((colorInfo) => {
-    colorInfo.color = palette[colorInfo.id];
-    colorInfo.title = ntc.name(colorInfo.color)[1];
-    colorInfo.isLightColor = isLightColor(colorInfo.color);
-  });
-};
-
 export const isLightColor = (color) => {
   const red = parseInt(color.slice(1, 3), 16);
   const green = parseInt(color.slice(3, 5), 16);
   const blue = parseInt(color.slice(5, 7), 16);
 
   return ((red * 299) + (green * 587) + (blue * 114)) / 1000 > 200;
+};
+
+export const createApplicationColorList = (colorPalette) => {
+  const rainbowColor = {
+    id: 'color_0',
+    color: '#000000',
+    title: 'Rainbow',
+    isLightColor: false,
+    isRainbow: true,
+  };
+
+  const colorIds = [
+    'color_1',
+    'color_2',
+    'color_3',
+    'color_4',
+    'color_5',
+    'color_6',
+  ];
+
+  return [
+    rainbowColor,
+    ...colorIds.map((colorId) => {
+      const color = colorPalette[colorId];
+
+      return {
+        id: colorId,
+        color: color,
+        title: ntc.name(color)[1],
+        isLightColor: isLightColor(color),
+        isRainbow: false,
+      };
+    }),
+  ];
 };
 
 // - font_y_offset_compensation: Hack to make HTML similar to Canvas

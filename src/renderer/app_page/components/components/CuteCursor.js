@@ -1,13 +1,14 @@
 import React from "react";
 import "./CuteCursor.scss";
-import { colorList, widthList } from "../constants.js"
+import { widthList } from "../constants.js"
 
 const CuteCursor = ({
   mouseCoordinates,
   activeColorIndex,
   activeWidthIndex,
   activeTool,
-  Icons
+  Icons,
+  colorList,
 }) => {
   if (mouseCoordinates.x === 0 && mouseCoordinates.y === 0) {
     return null;

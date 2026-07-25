@@ -1,7 +1,7 @@
 import './DrawDesk.scss';
 
 import React, { useEffect, useRef } from 'react';
-import { colorList, palmMinContactArea, palmMinContactLength } from '../constants.js'
+import { palmMinContactArea, palmMinContactLength } from '../constants.js'
 import { getMouseCoordinates } from '../utils/general.js';
 import {
   drawPen,
@@ -38,6 +38,7 @@ const DrawDesk = ({
   updateRainbowColorDeg,
   activeTool,
   handleChangeTool,
+  colorList,
 }) => {
 
   const canvasRef = useRef(null);
@@ -77,7 +78,7 @@ const DrawDesk = ({
 
   useEffect(() => {
     draw(allFigures, allFadeFigures, allLaserFigures, allEraserFigures, activeFigureInfo, fadeOpacity, offscreenCanvasRef.current);
-  }, [allFigures, allFadeFigures, allLaserFigures, allEraserFigures, activeFigureInfo, fadeOpacity]);
+  }, [allFigures, allFadeFigures, allLaserFigures, allEraserFigures, activeFigureInfo, fadeOpacity, colorList]);
 
   const draw = (allFigures, allFadeFigures, allLaserFigures, allEraserFigures, activeFigureInfo, fadeOpacity, offscreenCanvas) => {
     const ctx = canvasRef.current.getContext('2d');
@@ -88,7 +89,7 @@ const DrawDesk = ({
         if (colorList[figure.colorIndex].isRainbow) {
           drawRainbowPen(ctx, offscreenCanvas, figure, updateRainbowColorDeg)
         } else {
-          drawPen(ctx, figure)
+          drawPen(ctx, figure, colorList)
         }
       }
 
@@ -96,12 +97,12 @@ const DrawDesk = ({
         if (colorList[figure.colorIndex].isRainbow) {
           drawRainbowHighlighter(ctx, offscreenCanvas, figure, updateRainbowColorDeg)
         } else {
-          drawHighlighter(ctx, figure)
+          drawHighlighter(ctx, figure, colorList)
         }
       }
 
       if (figure.type === 'arrow') {
-        drawArrow(ctx, figure, updateRainbowColorDeg)
+        drawArrow(ctx, figure, updateRainbowColorDeg, colorList)
 
         if (activeFigureInfo && figure.id === activeFigureInfo.id) {
           drawArrowActive(ctx, figure, activeFigureInfo.hoveredDotName)
@@ -109,7 +110,7 @@ const DrawDesk = ({
       }
 
       if (figure.type === 'flat_arrow') {
-        drawFlatArrow(ctx, figure, updateRainbowColorDeg)
+        drawFlatArrow(ctx, figure, updateRainbowColorDeg, colorList)
 
         if (activeFigureInfo && figure.id === activeFigureInfo.id) {
           drawFlatArrowActive(ctx, figure, activeFigureInfo.hoveredDotName)
@@ -117,26 +118,26 @@ const DrawDesk = ({
       }
 
       if (figure.type === 'line') {
-        drawLine(ctx, figure, updateRainbowColorDeg)
+        drawLine(ctx, figure, updateRainbowColorDeg, colorList)
 
         if (activeFigureInfo && figure.id === activeFigureInfo.id) {
-          drawLineActive(ctx, figure, activeFigureInfo.hoveredDotName)
+          drawLineActive(ctx, figure, activeFigureInfo.hoveredDotName, colorList)
         }
       }
 
       if (figure.type === 'rectangle') {
-        drawRectangle(ctx, figure, updateRainbowColorDeg)
+        drawRectangle(ctx, figure, updateRainbowColorDeg, colorList)
 
         if (activeFigureInfo && figure.id === activeFigureInfo.id) {
-          drawRectangleActive(ctx, figure, activeFigureInfo.hoveredDotName)
+          drawRectangleActive(ctx, figure, activeFigureInfo.hoveredDotName, colorList)
         }
       }
 
       if (figure.type === 'oval') {
-        drawOval(ctx, figure, updateRainbowColorDeg)
+        drawOval(ctx, figure, updateRainbowColorDeg, colorList)
 
         if (activeFigureInfo && figure.id === activeFigureInfo.id) {
-          drawOvalActive(ctx, figure, activeFigureInfo.hoveredDotName)
+          drawOvalActive(ctx, figure, activeFigureInfo.hoveredDotName, colorList)
         }
       }
 
@@ -149,7 +150,7 @@ const DrawDesk = ({
           dotName = activeFigureInfo.hoveredDotName;
         }
 
-        drawText(ctx, figure, updateRainbowColorDeg, isActive, dotName)
+        drawText(ctx, figure, updateRainbowColorDeg, isActive, dotName, colorList)
       }
     })
 
@@ -158,7 +159,7 @@ const DrawDesk = ({
         if (colorList[figure.colorIndex].isRainbow) {
           drawRainbowPen(ctx, offscreenCanvas, figure, updateRainbowColorDeg, fadeOpacity)
         } else {
-          drawPen(ctx, figure, fadeOpacity)
+          drawPen(ctx, figure, colorList, fadeOpacity)
         }
       }
     })

@@ -8,7 +8,6 @@ import {
   isSmallArrowFigure,
 } from '../../utils/general.js';
 import {
-  colorList,
   widthList,
   rainbowScaleFactor,
   dotTextMargin,
@@ -86,7 +85,7 @@ export const hslTextGradientStops = (pointA, pointB, colorDeg) => {
   return [distance, hslStops];
 }
 
-const activeColorAndWidth = (figure) => {
+const activeColorAndWidth = (figure, colorList) => {
   const { colorIndex } = figure;
   const width = 2;
 
@@ -97,7 +96,7 @@ const activeColorAndWidth = (figure) => {
   return ['#FFF', width]
 }
 
-const detectColorAndWidth = (ctx, figure, updateRainbowColorDeg) => {
+const detectColorAndWidth = (ctx, figure, updateRainbowColorDeg, colorList) => {
   const { points: [pointA, pointB], colorIndex, widthIndex, rainbowColorDeg, erased } = figure
 
   let color = colorList[colorIndex].color
@@ -114,7 +113,7 @@ const detectColorAndWidth = (ctx, figure, updateRainbowColorDeg) => {
   return [color, width]
 }
 
-const detectColorAndFontSize = (ctx, figure, updateRainbowColorDeg) => {
+const detectColorAndFontSize = (ctx, figure, updateRainbowColorDeg, colorList) => {
   const { points: [pointA], colorIndex, widthIndex, rainbowColorDeg, width, height, erased } = figure;
 
   let color = colorList[colorIndex].color
@@ -139,7 +138,7 @@ const detectColorAndFontSize = (ctx, figure, updateRainbowColorDeg) => {
   return [color, fontSize, font_y_offset_compensation]
 }
 
-export const getCursorColor = (colorIndex, rainbowColorDeg) => {
+export const getCursorColor = (colorList, colorIndex, rainbowColorDeg) => {
   const colorInfo = colorList[colorIndex]
 
   if (colorInfo.isRainbow) {
@@ -149,7 +148,7 @@ export const getCursorColor = (colorIndex, rainbowColorDeg) => {
   return colorInfo.color
 }
 
-export const drawPen = (ctx, figure, fadeOpacity = 1) => {
+export const drawPen = (ctx, figure, colorList, fadeOpacity = 1) => {
   const { points, colorIndex, widthIndex } = figure;
 
   const colorInfo = colorList[colorIndex]
@@ -230,7 +229,7 @@ const drawLazyRainbowLine = (ctx, figure, updateRainbowColorDeg, width) => {
   updateRainbowColorDeg(colorDeg)
 }
 
-export const drawHighlighter = (ctx, figure) => {
+export const drawHighlighter = (ctx, figure, colorList) => {
   const { points, colorIndex, widthIndex } = figure;
 
   const colorInfo = colorList[colorIndex]
@@ -270,14 +269,14 @@ export const drawRainbowHighlighter = (ctx, offscreenCanvas, figure, updateRainb
   ctx.restore();
 }
 
-export const drawArrow = (ctx, figure, updateRainbowColorDeg) => {
+export const drawArrow = (ctx, figure, updateRainbowColorDeg, colorList) => {
   const { points, widthIndex } = figure;
 
   const isSmallArrow = isSmallArrowFigure(points, widthIndex);
   const figurePoints = calcPointsArrow(points, widthIndex);
   const arcSegments = buildArrowArcSegments(figurePoints, widthIndex);
 
-  const [color] = detectColorAndWidth(ctx, figure, updateRainbowColorDeg)
+  const [color] = detectColorAndWidth(ctx, figure, updateRainbowColorDeg, colorList)
   const shadowColor = '#222';
   const shadowBlur = 2;
   const shadowOffsetX = 1;
@@ -313,8 +312,8 @@ export const drawArrowActive = (ctx, figure, hoveredDot) => {
   drawDotsForFigure(ctx, figure, hoveredDot)
 }
 
-export const drawFlatArrow = (ctx, figure, updateRainbowColorDeg) => {
-  const [color, width] = detectColorAndWidth(ctx, figure, updateRainbowColorDeg)
+export const drawFlatArrow = (ctx, figure, updateRainbowColorDeg, colorList) => {
+  const [color, width] = detectColorAndWidth(ctx, figure, updateRainbowColorDeg, colorList)
   const segments = calcSegmentsFlatArrow(figure.points, figure.widthIndex)
 
   segments.forEach(([pointA, pointB]) => {
@@ -326,16 +325,16 @@ export const drawFlatArrowActive = (ctx, figure, hoveredDot) => {
   drawDotsForFigure(ctx, figure, hoveredDot)
 }
 
-export const drawLine = (ctx, figure, updateRainbowColorDeg) => {
+export const drawLine = (ctx, figure, updateRainbowColorDeg, colorList) => {
   const { points: [pointA, pointB] } = figure
-  const [color, width] = detectColorAndWidth(ctx, figure, updateRainbowColorDeg)
+  const [color, width] = detectColorAndWidth(ctx, figure, updateRainbowColorDeg, colorList)
 
   drawLineSkeleton(ctx, pointA, pointB, color, width)
 }
 
-export const drawLineActive = (ctx, figure, hoveredDot) => {
+export const drawLineActive = (ctx, figure, hoveredDot, colorList) => {
   const [pointA, pointB] = figure.points
-  const [color, width] = activeColorAndWidth(figure)
+  const [color, width] = activeColorAndWidth(figure, colorList)
 
   drawLineSkeleton(ctx, pointA, pointB, color, width)
 
@@ -356,16 +355,16 @@ const drawLineSkeleton = (ctx, pointA, pointB, color, width) => {
   ctx.stroke();
 };
 
-export const drawOval = (ctx, figure, updateRainbowColorDeg) => {
+export const drawOval = (ctx, figure, updateRainbowColorDeg, colorList) => {
   const { points: [pointA, pointB] } = figure
-  const [color, width] = detectColorAndWidth(ctx, figure, updateRainbowColorDeg)
+  const [color, width] = detectColorAndWidth(ctx, figure, updateRainbowColorDeg, colorList)
 
   drawOvalSkeleton(ctx, pointA, pointB, color, width)
 }
 
-export const drawOvalActive = (ctx, figure, hoveredDot) => {
+export const drawOvalActive = (ctx, figure, hoveredDot, colorList) => {
   const [pointA, pointB] = figure.points
-  const [color, width] = activeColorAndWidth(figure)
+  const [color, width] = activeColorAndWidth(figure, colorList)
 
   drawOvalSkeleton(ctx, pointA, pointB, color, width)
 
@@ -390,16 +389,16 @@ const drawOvalSkeleton = (ctx, pointA, pointB, color, width) => {
   ctx.stroke();
 }
 
-export const drawRectangle = (ctx, figure, updateRainbowColorDeg) => {
+export const drawRectangle = (ctx, figure, updateRainbowColorDeg, colorList) => {
   const { points: [pointA, pointB] } = figure
-  const [color, width] = detectColorAndWidth(ctx, figure, updateRainbowColorDeg)
+  const [color, width] = detectColorAndWidth(ctx, figure, updateRainbowColorDeg, colorList)
 
   drawRectangleSkeleton(ctx, pointA, pointB, color, width)
 }
 
-export const drawRectangleActive = (ctx, figure, hoveredDot) => {
+export const drawRectangleActive = (ctx, figure, hoveredDot, colorList) => {
   const [pointA, pointB] = figure.points
-  const [color, width] = activeColorAndWidth(figure)
+  const [color, width] = activeColorAndWidth(figure, colorList)
 
   drawRectangleSkeleton(ctx, pointA, pointB, color, width)
   drawDotsForFigure(ctx, figure, hoveredDot)
@@ -484,10 +483,10 @@ export const drawEraserTail = (ctx, figure) => {
   ctx.shadowBlur = 0;
 }
 
-export const drawText = (ctx, figure, updateRainbowColorDeg, isActive, hoveredDot) => {
+export const drawText = (ctx, figure, updateRainbowColorDeg, isActive, hoveredDot, colorList) => {
   const { points: [startAt], text, scale, width, height } = figure;
 
-  const [color, fontSize, font_y_offset_compensation] = detectColorAndFontSize(ctx, figure, updateRainbowColorDeg)
+  const [color, fontSize, font_y_offset_compensation] = detectColorAndFontSize(ctx, figure, updateRainbowColorDeg, colorList)
 
   drawTextSkeleton(ctx, startAt, text, color, fontSize, font_y_offset_compensation, scale)
 

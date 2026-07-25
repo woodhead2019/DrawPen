@@ -1,12 +1,13 @@
 import './TextEditor.scss';
 
 import React, { useRef, useEffect } from 'react';
-import { colorList, widthList } from "../constants.js";
+import { widthList } from "../constants.js";
 import { hslTextGradientStops, getCursorColor } from "./drawer/figures.js";
 
 const TextEditor = ({
   textEditorContainer,
   handleTextEditorBlur,
+  colorList,
 }) => {
   const textAreaRef = useRef(null);
 
@@ -83,7 +84,7 @@ const TextEditor = ({
 
   const top = textEditorContainer.startAt[1];
   const left = textEditorContainer.startAt[0];
-  const color = getCursorColor(textEditorContainer.colorIndex, textEditorContainer.rainbowColorDeg);
+  const color = getCursorColor(colorList, textEditorContainer.colorIndex, textEditorContainer.rainbowColorDeg);
   const fontSize = widthList[textEditorContainer.widthIndex].font_size;
   const scale = textEditorContainer.scale;
 

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './Settings.scss';
 import ShortcutRecorder from './ShortcutRecorder';
 import {
-  colorList,
+  createApplicationColorList,
   timeStep,
   laserTimeMin,
   laserTimeMax,
@@ -73,6 +73,7 @@ const Settings = (config) => {
   const [secondaryColor, setSecondaryColor] = useState(config.swap_colors_indexes[1]);
   const [drawingMonitor, setDrawingMonitor] = useState(config.drawing_monitor);
 
+  const colorList = createApplicationColorList(config.tool_bar_color_palette);
   const mainColorInfo = colorList[mainColor];
   const secondaryColorInfo = colorList[secondaryColor];
 

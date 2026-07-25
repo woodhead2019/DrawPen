@@ -93,7 +93,7 @@ const schema = {
     type: 'number',
     default: 1
   },
-  toolbar_color_palette: {
+  tool_bar_color_palette: {
     type: 'object',
     default: {
       color_1: '#529BE0',
@@ -718,7 +718,7 @@ ipcMain.handle('get_settings', () => {
     tool_bar_y: store.get('tool_bar_y'),
     tool_bar_active_tool: store.get('tool_bar_active_tool'),
     tool_bar_active_color_index: store.get('tool_bar_active_color_index'),
-    toolbar_color_palette: store.get('toolbar_color_palette'),
+    tool_bar_color_palette: store.get('tool_bar_color_palette'),
     tool_bar_active_weight_index: store.get('tool_bar_active_weight_index'),
     tool_bar_default_brush: store.get('tool_bar_default_brush'),
     tool_bar_default_figure: store.get('tool_bar_default_figure'),
@@ -811,7 +811,7 @@ ipcMain.handle('get_configuration', () => {
     show_drawing_border:                      store.get('show_drawing_border'),
     show_cute_cursor:                         store.get('show_cute_cursor'),
     pen_smoothing:                            store.get('pen_smoothing'),
-    toolbar_color_palette:                    store.get('toolbar_color_palette'),
+    tool_bar_color_palette:                   store.get('tool_bar_color_palette'),
     swap_colors_indexes:                      store.get('swap_colors_indexes'),
     fade_disappear_after_ms:                  store.get('fade_disappear_after_ms'),
     fade_out_duration_time_ms:                store.get('fade_out_duration_time_ms'),
@@ -1026,6 +1026,7 @@ function refreshSettingsInRenderer() {
     show_drawing_border:     store.get('show_drawing_border'),
     show_cute_cursor:        store.get('show_cute_cursor'),
     pen_smoothing:           store.get('pen_smoothing'),
+    tool_bar_color_palette:  store.get('tool_bar_color_palette'),
     swap_colors_indexes:     store.get('swap_colors_indexes'),
     clear_drawings_on_hide:  store.get('clear_drawings_on_hide'),
   })
