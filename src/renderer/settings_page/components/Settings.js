@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './Settings.scss';
 import ShortcutRecorder from './ShortcutRecorder';
+import ColorPicker from './ColorPicker';
 import {
   createApplicationColorList,
   timeStep,
@@ -10,6 +11,7 @@ import {
   fadeDisappearAfterMax,
   fadeOutDurationTimeMsMin,
   fadeOutDurationTimeMsMax,
+  toolbarColorIds,
 } from "../../app_page/components/constants.js";
 
 import {
@@ -24,7 +26,6 @@ import {
 import { HiSwitchHorizontal } from "react-icons/hi";
 import { FaRegKeyboard } from "react-icons/fa6";
 import { FaPlus, FaMinus } from "react-icons/fa";
-
 
 const ShortcutRow = ({ title, description, hint, shortcut, onCheck, onChange, onReset, onRemove }) => {
   const canReset  = !!shortcut.init && shortcut.init !== shortcut.accelerator;
@@ -69,11 +70,13 @@ const Settings = (config) => {
   const [showHideWhiteboard, setShowHideWhiteboard] = useState({ accelerator: config.key_binding_show_hide_whiteboard, init: config.key_binding_show_hide_whiteboard_default });
   const [clearDesk, setClearDesk]                   = useState({ accelerator: config.key_binding_clear_desk,           init: config.key_binding_clear_desk_default });
 
-  const [mainColor, setMainColor]           = useState(config.swap_colors_indexes[0]);
-  const [secondaryColor, setSecondaryColor] = useState(config.swap_colors_indexes[1]);
-  const [drawingMonitor, setDrawingMonitor] = useState(config.drawing_monitor);
+  const [mainColor, setMainColor]                     = useState(config.swap_colors_indexes[0]);
+  const [secondaryColor, setSecondaryColor]           = useState(config.swap_colors_indexes[1]);
+  const [drawingMonitor, setDrawingMonitor]           = useState(config.drawing_monitor);
+  const [toolbarColorPalette, setToolbarColorPalette] = useState(config.tool_bar_color_palette);
+  const [editingColorId, setEditingColorId]           = useState(null);
 
-  const colorList = createApplicationColorList(config.tool_bar_color_palette);
+  const colorList = createApplicationColorList(toolbarColorPalette);
   const mainColorInfo = colorList[mainColor];
   const secondaryColorInfo = colorList[secondaryColor];
 
@@ -84,6 +87,18 @@ const Settings = (config) => {
 
   const resetToOriginals = () => {
     window.electronAPI.resetToOriginals();
+  }
+
+  const selectTab = (tab) => {
+    setEditingColorId(null);
+    setActiveTab(tab);
+  }
+
+  const saveToolbarColor = (colorId, color) => {
+    setToolbarColorPalette({...toolbarColorPalette, [colorId]: color });
+    setEditingColorId(null);
+
+    window.electronAPI.setToolbarColor(colorId, color);
   }
 
   const canRegisterShortcut = async (accelerator) => {
@@ -271,7 +286,7 @@ const Settings = (config) => {
         <div className="settings-sidebar">
           <div
             className={`settings-sidebar-item ${activeTab === 'shortcuts' ? 'active' : ''}`}
-            onClick={() => setActiveTab('shortcuts')}
+            onClick={() => selectTab('shortcuts')}
           >
             <FaRegKeyboard className="icon" />
             Keyboard Shortcuts
@@ -279,7 +294,7 @@ const Settings = (config) => {
 
           <div
             className={`settings-sidebar-item ${activeTab === 'appearance' ? 'active' : ''}`}
-            onClick={() => setActiveTab('appearance')}
+            onClick={() => selectTab('appearance')}
           >
             <IoColorPaletteOutline className="icon" />
             Appearance
@@ -287,7 +302,7 @@ const Settings = (config) => {
 
           <div
             className={`settings-sidebar-item ${activeTab === 'application' ? 'active' : ''}`}
-            onClick={() => setActiveTab('application')}
+            onClick={() => selectTab('application')}
           >
             <IoApps className="icon" />
             Application
@@ -387,6 +402,43 @@ const Settings = (config) => {
 
             <div className="settings-content">
               <div className="settings-section">
+
+                <div className="settings-item">
+                  <div className="settings-item-info">
+                    <div className="settings-item-title">Toolbar Colors</div>
+                  </div>
+
+                  <div className="settings-item-control">
+                    <ul className="toolbar-colors-control">
+                      {toolbarColorIds.map((colorId) => {
+                        const color = toolbarColorPalette[colorId];
+                        const isEditing = editingColorId === colorId;
+
+                        return (
+                          <li
+                            key={colorId}
+                            className={`toolbar-color-slot-anchor ${isEditing ? 'active' : ''}`}
+                          >
+                            <button
+                              type="button"
+                              className="toolbar-color-slot"
+                              style={{ backgroundColor: color }}
+                              onClick={() => setEditingColorId(isEditing ? null : colorId)}
+                            />
+
+                            {isEditing && (
+                              <ColorPicker
+                                initialColor={color}
+                                onCancel={() => setEditingColorId(null)}
+                                onSave={(nextColor) => saveToolbarColor(colorId, nextColor)}
+                              />
+                            )}
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
+                </div>
 
                 <div className="settings-item">
                   <div className="settings-item-info">

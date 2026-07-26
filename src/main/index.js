@@ -959,6 +959,16 @@ ipcMain.handle('set_swap_colors', (_event, value) => {
   return null;
 });
 
+ipcMain.handle('set_toolbar_color', (_event, colorId, normalizedColor) => {
+  rawLog('Setting toolbar color:', colorId, normalizedColor)
+
+  store.set(`tool_bar_color_palette.${colorId}`, normalizedColor)
+
+  refreshSettingsInRenderer();
+
+  return null
+});
+
 ipcMain.handle('set_fade_disappear_after_ms', (_event, value) => {
   rawLog('Setting fade disappear after:', value)
 

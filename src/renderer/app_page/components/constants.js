@@ -47,6 +47,24 @@ export const isLightColor = (color) => {
   return ((red * 299) + (green * 587) + (blue * 114)) / 1000 > 200;
 };
 
+export const defaultColorPickerColors = [ // must match Electron Store tool_bar_color_palette defaults
+  '#529BE0',
+  '#E05252',
+  '#52E06C',
+  '#E0A552',
+  '#FFFFFF',
+  '#1E1E1E',
+];
+
+export const toolbarColorIds = [
+  'color_1',
+  'color_2',
+  'color_3',
+  'color_4',
+  'color_5',
+  'color_6',
+];
+
 export const createApplicationColorList = (colorPalette) => {
   const rainbowColor = {
     id: 'color_0',
@@ -56,18 +74,9 @@ export const createApplicationColorList = (colorPalette) => {
     isRainbow: true,
   };
 
-  const colorIds = [
-    'color_1',
-    'color_2',
-    'color_3',
-    'color_4',
-    'color_5',
-    'color_6',
-  ];
-
   return [
     rainbowColor,
-    ...colorIds.map((colorId) => {
+    ...toolbarColorIds.map((colorId) => {
       const color = colorPalette[colorId];
 
       return {
