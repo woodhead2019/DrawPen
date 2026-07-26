@@ -403,31 +403,14 @@ html, body {
                   gap: 4px;
                   align-items: center;
 
-                  .color-plate {
+                  .color-swatch {
                     cursor: pointer;
-
-                    position: relative;
                     width: 24px;
                     height: 24px;
-                    border-radius: 50%;
-                    border: none;
-
-                    &::before {
-                      position: absolute;
-                      content: "";
-                      top: 50%;
-                      left: 50%;
-                      width: 16px;
-                      height: 16px;
-                      background: inherit;
-                      border-radius: 50%;
-                      border: 2px solid #FFFFFF;
-                      transform: translate(-50%, -50%);
-                    }
-
-                    &.color-light {
-                      &::before { border-color: var(--gray-300); }
-                    }
+                    box-sizing: border-box;
+                    padding: 0;
+                    border: 1px solid var(--gray-400);
+                    border-radius: 4px;
 
                     &.color-rainbow { background-image: conic-gradient(red, yellow, lime, aqua, blue, magenta, red); }
                   }

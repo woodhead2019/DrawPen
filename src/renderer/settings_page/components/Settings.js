@@ -373,19 +373,23 @@ const Settings = (config) => {
 
                   <div className="settings-item-control">
                     <div className="color-swatches">
-                      <div
+                      <button
+                        type="button"
                         onClick={nextMainColor}
-                        className={`color-plate ${mainColorInfo.isRainbow ? 'color-rainbow' : ''} ${mainColorInfo.isLightColor ? 'color-light' : ''}`}
+                        className={`color-swatch ${mainColorInfo.isRainbow ? 'color-rainbow' : ''}`}
                         style={{ backgroundColor: mainColorInfo.color }}
-                      ></div>
+                        title={mainColorInfo.title}
+                      />
 
-                      <HiSwitchHorizontal className="icon icon--disabled" title="Press X to switch colors" />
+                      <HiSwitchHorizontal className="icon icon--disabled" />
 
-                      <div
+                      <button
+                        type="button"
                         onClick={nextSecondaryColor}
-                        className={`color-plate ${secondaryColorInfo.isRainbow ? 'color-rainbow' : ''} ${secondaryColorInfo.isLightColor ? 'color-light' : ''}`}
+                        className={`color-swatch ${secondaryColorInfo.isRainbow ? 'color-rainbow' : ''}`}
                         style={{ backgroundColor: secondaryColorInfo.color }}
-                      ></div>
+                        title={secondaryColorInfo.title}
+                      />
                     </div>
                   </div>
                 </div>
@@ -412,6 +416,7 @@ const Settings = (config) => {
                     <ul className="toolbar-colors-control">
                       {toolbarColorIds.map((colorId) => {
                         const color = toolbarColorPalette[colorId];
+                        const colorTitle = colorList.find((colorInfo) => colorInfo.id === colorId).title;
                         const isEditing = editingColorId === colorId;
 
                         return (
@@ -424,6 +429,7 @@ const Settings = (config) => {
                               className="toolbar-color-slot"
                               style={{ backgroundColor: color }}
                               onClick={() => setEditingColorId(isEditing ? null : colorId)}
+                              title={colorTitle}
                             />
 
                             {isEditing && (
