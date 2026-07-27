@@ -1,5 +1,17 @@
 # Change Log
 
+## [0.0.54] - 2026-07-27
+### Features:
+- Add configurable toolbar color palette
+
+### Improvements:
+- Update Color Swap controls in Settings
+
+### Bug Fixes:
+- Prevent drawing shortcuts from activating during hard refresh
+- Fix Cute Cursor position after hard refresh
+- Fix default color preview in Toolbar
+
 ## [0.0.53] - 2026-06-28
 ### Features:
 - Add clear drawings on hide setting
