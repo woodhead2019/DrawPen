@@ -13,6 +13,8 @@ if (electronSquirrelStartup) {
 }
 
 const isDevelopment = process.env.NODE_ENV === 'development'
+const isDebugLoggingEnabled = process.env.DRAWPEN_DEBUG === '1'
+const isLoggingEnabled = isDevelopment || isDebugLoggingEnabled
 
 const isMac = process.platform === 'darwin'
 const isLinux = process.platform === 'linux'
@@ -206,7 +208,7 @@ store.onDidChange('show_whiteboard', (newValue, oldValue) => {
   updateContextMenu()
 })
 
-if (isDevelopment) {
+if (isLoggingEnabled) {
   rawLog('Initial store: ', store.store)
 
   store.onDidAnyChange((newStore, _oldStore) => {
@@ -416,6 +418,8 @@ function createMainWindow() {
       event.preventDefault();
     }
   });
+
+  rawLog('Main Window:', currentDisplay.workArea)
 }
 
 function createExtendedToolbarWindow() {
@@ -636,6 +640,8 @@ app.whenReady().then(() => {
   hideDock()
 
   startAsHiddenCheck()
+
+  logDisplays()
 
   createMainWindow()
   createExtendedToolbarWindow()
@@ -1189,7 +1195,7 @@ function resetApp() {
     tray.setImage(getTrayIconPath())
 
     enablePointerMode()
-    
+
     mainWindow.reload()
 
     if (settingsWindow) {
@@ -1494,6 +1500,28 @@ function getAllDisplaysInfo() {
   })
 }
 
+function logDisplays() {
+  const displays = screen.getAllDisplays()
+  const primaryDisplayId = screen.getPrimaryDisplay().id
+
+  rawLog(`Connected displays: ${displays.length}`)
+
+  displays.forEach((display, index) => {
+    rawLog(`Display ${index + 1}:`, {
+      id: display.id,
+      label: display.label,
+      primary: display.id === primaryDisplayId,
+      internal: display.internal,
+      size: display.size,
+      bounds: display.bounds,
+      workArea: display.workArea,
+      scaleFactor: display.scaleFactor,
+      rotation: display.rotation,
+      displayFrequency: display.displayFrequency,
+    })
+  })
+}
+
 function normalizeAcceleratorForUI(value) {
   if (!value) return value;
 
@@ -1596,7 +1624,7 @@ function launchTracker() {
 }
 
 function rawLog(message, ...args) {
-  if (!isDevelopment) { return }
+  if (!isLoggingEnabled) { return }
 
   console.log(message, ...args);
 }
