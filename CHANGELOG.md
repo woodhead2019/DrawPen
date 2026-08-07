@@ -1,5 +1,12 @@
 # Change Log
 
+## [0.0.55] - 2026-08-07
+### Improvements:
+- Add opt-in debug logging for packaged app via `DRAWPEN_DEBUG=1`
+
+### Bug Fixes:
+- Update Electron from 43.2.0 to 43.3.0
+
 ## [0.0.54] - 2026-07-27
 ### Features:
 - Add configurable toolbar color palette
