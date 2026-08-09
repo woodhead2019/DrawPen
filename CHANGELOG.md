@@ -1,5 +1,9 @@
 # Change Log
 
+## [0.0.56] - 2026-08-09
+### Bug Fixes:
+- Restore the system tray icon and context menu on Linux by downgrading Electron from 43.3.0 to 40.4.0
+
 ## [0.0.55] - 2026-08-07
 ### Improvements:
 - Add opt-in debug logging for packaged app via `DRAWPEN_DEBUG=1`
